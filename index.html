@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>외교부 국제기구 채용정보</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">🌐</span>
+        <span class="logo-text">Global<strong>Recruit</strong></span>
+      </div>
+      <p class="header-sub">외교부 국제기구 채용정보</p>
+      <button class="stats-toggle-btn" id="statsToggleBtn">📊 통계 보기</button>
+    </div>
+  </header>
+
+  <!-- 통계 대시보드 (접이식) -->
+  <div class="stats-panel" id="statsPanel" style="display:none;">
+    <div class="stats-inner">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <p class="stat-label">전체 공고</p>
+          <p class="stat-num" id="statTotal">-</p>
+        </div>
+        <div class="stat-card">
+          <p class="stat-label">인턴십</p>
+          <p class="stat-num" id="statIntern">-</p>
+        </div>
+        <div class="stat-card">
+          <p class="stat-label">정규직</p>
+          <p class="stat-num" id="statCareer">-</p>
+        </div>
+        <div class="stat-card">
+          <p class="stat-label">해외 공고</p>
+          <p class="stat-num" id="statOverseas">-</p>
+        </div>
+      </div>
+      <div class="charts-row">
+        <div class="chart-wrap">
+          <p class="chart-title">국가별 공고 수 (상위 8개)</p>
+          <canvas id="countryChart"></canvas>
+        </div>
+        <div class="chart-wrap">
+          <p class="chart-title">분야별 키워드 (상위 10개)</p>
+          <canvas id="keywordChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="main">
+
+    <div class="job-type-bar">
+      <button class="job-tab active" data-jobtype="all">전체</button>
+      <button class="job-tab" data-jobtype="internship">🎓 인턴십</button>
+      <button class="job-tab" data-jobtype="career">💼 정규직</button>
+      <button class="job-tab" data-jobtype="fav">❤️ 즐겨찾기</button>
+      <div class="view-toggle">
+        <button class="view-btn active" data-view="card" title="카드 뷰">⊞</button>
+        <button class="view-btn" data-view="map" title="지도 뷰">🗺</button>
+      </div>
+    </div>
+
+    <section class="filter-section">
+      <div class="tab-group">
+        <button class="tab active" data-filter="all">전체 <span class="tab-count" id="count-all"></span></button>
+        <button class="tab" data-filter="domestic">국내 <span class="tab-count" id="count-domestic"></span></button>
+        <button class="tab" data-filter="overseas">해외 <span class="tab-count" id="count-overseas"></span></button>
+      </div>
+      <div class="filter-right">
+        <div class="search-wrap">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="searchInput" class="search-input" placeholder="직무명, 키워드, 도시 검색" />
+          <button class="search-clear" id="searchClear" style="display:none;">✕</button>
+        </div>
+        <select id="workTypeFilter" class="select-filter">
+          <option value="all">근무형태 전체</option>
+          <option value="On-site">현장 근무</option>
+          <option value="Hybrid">하이브리드</option>
+        </select>
+        <select id="sortFilter" class="select-filter">
+          <option value="newest">최신순</option>
+          <option value="oldest">오래된순</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- 활성 키워드 필터 표시 -->
+    <div id="activeKeyword" class="active-keyword" style="display:none;">
+      <span id="activeKeywordText"></span>
+      <button id="clearKeyword">✕ 초기화</button>
+    </div>
+
+    <div class="result-meta"><span id="resultCount">0</span>개의 공고</div>
+
+    <div id="loadingState" class="loading-state">
+      <div class="spinner"></div>
+      <p>공고를 불러오는 중이에요...</p>
+    </div>
+
+    <div class="card-grid" id="cardGrid" style="display:none;"></div>
+
+    <div id="mapView" style="display:none;">
+      <div id="map"></div>
+    </div>
+
+    <div class="empty-state" id="emptyState" style="display:none;">
+      <span>😕</span>
+      <p>검색 결과가 없어요</p>
+      <p class="empty-sub">다른 키워드로 검색해보세요</p>
+    </div>
+
+  </main>
+
+  <footer class="footer">
+    <p>데이터 출처: 외교부 국제기구인사센터 · 본 서비스는 경진대회 출품작입니다</p>
+  </footer>
+
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <button class="modal-close" id="modalClose">✕</button>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
