@@ -1,6 +1,6 @@
 // ─── GitHub raw URL ───────────────────────────────
-const INTERNSHIP_URL = 'https://raw.githubusercontent.com/yyj0609/public_data/main/public/data/internship_jobs.json';
-const CAREER_URL     = 'https://raw.githubusercontent.com/yyj0609/public_data/main/public/data/general_jobs.json';
+const INTERNSHIP_URL = './public/data/internship_jobs.json';
+const CAREER_URL     = './public/data/general_jobs.json';
 
 // ─── 상태 ────────────────────────────────────────
 let ALL_DATA        = [];
